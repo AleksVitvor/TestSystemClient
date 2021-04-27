@@ -22,7 +22,7 @@ namespace Services.Login.Registration
         {
             var client = HttpClientFactory.CreateClient();
             registerModel.Password = Crypto.SHA256GetHash(registerModel.Password);
-            var result = await client.PutAsJsonAsync("https://courcestage.herokuapp.com/user", registerModel);
+            var result = await client.PostAsJsonAsync("http://localhost:3000/user/register", registerModel);
             return result.IsSuccessStatusCode;
         }
     }

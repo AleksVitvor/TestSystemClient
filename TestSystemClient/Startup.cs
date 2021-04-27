@@ -1,16 +1,13 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Services.CryptoService;
+using Services.Login.Login;
 using Services.Login.Registration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace TestSystemClient
 {
@@ -29,7 +26,15 @@ namespace TestSystemClient
             services.AddControllersWithViews();
 
             services.AddTransient<IRegistrationService, RegistrationService>();
+            services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ICrypto, CryptoService>();
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = new PathString("/Login/Login");
+                    options.AccessDeniedPath = new PathString("/Login/Login");
+                });
 
             services.AddHttpClient();
         }
