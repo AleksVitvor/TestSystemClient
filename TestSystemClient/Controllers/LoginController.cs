@@ -26,6 +26,7 @@ namespace TestSystemClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
+            SignOut();
             return View();
         }
 
@@ -40,9 +41,8 @@ namespace TestSystemClient.Controllers
             }
             else
             {
-
-            }
-            
+                await Authenticate(registeredUser);
+            }            
             return RedirectToAction("Tests", "Test");                
         }
 
@@ -53,6 +53,7 @@ namespace TestSystemClient.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterModelDto registerModel)
         {
             if (await RegistrationService.Register(registerModel))
@@ -67,10 +68,9 @@ namespace TestSystemClient.Controllers
 
         private async Task Authenticate(RequestLoginModel loginModel)
         {
-            // создаем один claim
             var claims = new List<Claim>
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, loginModel.Login),
+                new Claim(ClaimsIdentity.DefaultNameClaimType, loginModel.Token),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, loginModel.Role)
             };
             // создаем объект ClaimsIdentity

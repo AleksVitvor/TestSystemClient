@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Services.CryptoService;
 using Services.Login.Login;
 using Services.Login.Registration;
+using Services.TestService.Tests;
 using System;
 
 namespace TestSystemClient
@@ -28,6 +29,7 @@ namespace TestSystemClient
 
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<ILoginService, LoginService>();
+            services.AddTransient<ITestService, TestService>();
             services.AddTransient<ICrypto, CryptoService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -39,14 +41,17 @@ namespace TestSystemClient
 
             services.AddHttpClient("notauthorized", c =>
             {
-                c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
+                //c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
+                c.BaseAddress = new Uri("http://localhost:3000/");
             });
 
             services.AddHttpClient("authorized", c =>
             {
-                c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
-                c.DefaultRequestHeaders.Add("Authorization", "");
+                //c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
+                c.BaseAddress = new Uri("http://localhost:3000/");
             });
+
+            services.AddHttpContextAccessor();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +72,7 @@ namespace TestSystemClient
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
