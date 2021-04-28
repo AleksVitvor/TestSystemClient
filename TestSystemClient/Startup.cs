@@ -41,14 +41,14 @@ namespace TestSystemClient
 
             services.AddHttpClient("notauthorized", c =>
             {
-                //c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
-                c.BaseAddress = new Uri("http://localhost:3000/");
+                c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
+                //c.BaseAddress = new Uri("http://localhost:3000/");
             });
 
             services.AddHttpClient("authorized", c =>
             {
-                //c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
-                c.BaseAddress = new Uri("http://localhost:3000/");
+                c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
+                //c.BaseAddress = new Uri("http://localhost:3000/");
             });
 
             services.AddHttpContextAccessor();
