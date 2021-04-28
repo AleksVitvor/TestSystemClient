@@ -5,11 +5,8 @@
     ViewData["Title"] = "View";
 }
 
-<h1>View</h1>
+<h1>Tests</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -19,9 +16,7 @@
                     @Html.DisplayNameFor(model => model.TestId)
                 </th>
             }
-            <th>
-                @Html.DisplayNameFor(model => model.TestName)
-            </th>
+            <th>Test</th>
             <th>
                 @Html.DisplayNameFor(model => model.Creator)
             </th>
@@ -58,7 +53,15 @@
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.TestId }) |
                         @Html.ActionLink("Details", "Details", new { id = item.TestId }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.TestId })
+                        @if (item.IsActive)
+                        {
+                            @Html.ActionLink("Delete", "Delete", new { id = item.TestId })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Activate", "Activate", new { id = item.TestId })
+
+                        }
                     </td>
                 }
             </tr>
