@@ -3,6 +3,7 @@ using DtoModels.RequestModels.Login;
 using Services.CryptoService;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -24,9 +25,9 @@ namespace Services.Login.Login
 
             try
             {
-                var client = HttpClientFactory.CreateClient();
+                var client = HttpClientFactory.CreateClient("notauthorized");
                 loginModel.Password = Crypto.SHA256GetHash(loginModel.Password);
-                var result = await client.PostAsJsonAsync("http://localhost:3000/user/login", loginModel);
+                var result = await client.PostAsJsonAsync("/user/login", loginModel);
                 requestLogin = await result.Content.ReadFromJsonAsync<RequestLoginModel>();
             }
             catch (Exception)

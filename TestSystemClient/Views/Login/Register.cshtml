@@ -33,6 +33,12 @@
     </div>
 </div>
 
+<form asp-controller="Login" asp-action="Login" method="get">
+    <div>
+        <input type="submit" value="Go to LogIn" class="btn btn-primary" />
+    </div>
+</form>
+
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

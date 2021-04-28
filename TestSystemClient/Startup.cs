@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Services.CryptoService;
 using Services.Login.Login;
 using Services.Login.Registration;
+using System;
 
 namespace TestSystemClient
 {
@@ -36,7 +37,16 @@ namespace TestSystemClient
                     options.AccessDeniedPath = new PathString("/Login/Login");
                 });
 
-            services.AddHttpClient();
+            services.AddHttpClient("notauthorized", c =>
+            {
+                c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
+            });
+
+            services.AddHttpClient("authorized", c =>
+            {
+                c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
+                c.DefaultRequestHeaders.Add("Authorization", "");
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -63,7 +73,7 @@ namespace TestSystemClient
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Login}/{action=Login}/{id?}");
+                    pattern: "{controller=Login}/{action=Login}");
             });
         }
     }
