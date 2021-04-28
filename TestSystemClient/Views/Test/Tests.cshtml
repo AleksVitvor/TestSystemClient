@@ -1,0 +1,81 @@
+﻿@model IEnumerable<DtoModels.RequestModels.Test.TestRequestedModel>
+@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h1>View</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.TestId)
+                </th>
+            }
+            <th>
+                @Html.DisplayNameFor(model => model.TestName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Creator)
+            </th>
+            @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.IsActive)
+                </th>
+            }
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TestId)
+                    </td>
+                }
+                <td>
+                    @Html.DisplayFor(modelItem => item.TestName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Creator)
+                </td>
+                @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsActive)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.TestId }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.TestId }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.TestId })
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-controller="Login" asp-action="Login" method="get" class="floating-box">
+    <div>
+        <input type="submit" value="Log out" class="btn btn-primary" />
+    </div>
+</form>
+@if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+{
+    <form asp-controller="Test" asp-action="CreateTest" method="get" class="floating-box">
+        <div>
+            <input type="submit" value="Create test" class="btn btn-primary" />
+        </div>
+    </form>
+}

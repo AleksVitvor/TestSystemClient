@@ -12,4 +12,8 @@
     <ProjectReference Include="..\DtoModels\DtoModels.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TestService\Answers\" />
+  </ItemGroup>
+
 </Project>
