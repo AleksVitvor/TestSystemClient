@@ -6,79 +6,86 @@
 }
 
 <h1>Tests</h1>
-
-<table class="table">
-    <thead>
-        <tr>
-            @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model.TestId)
-                </th>
-            }
-            <th>Test</th>
-            <th>
-                @Html.DisplayNameFor(model => model.Creator)
-            </th>
-            @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
-            {
-                <th>
-                    @Html.DisplayNameFor(model => model.IsActive)
-                </th>
-            }
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="container">
+    <table class="table">
+        <thead>
             <tr>
                 @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
                 {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.TestId)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.TestId)
+                    </th>
                 }
-                <td>
-                    @Html.DisplayFor(modelItem => item.TestName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Creator)
-                </td>
+                <th>Test</th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Creator)
+                </th>
                 @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
                 {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.IsActive)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.TestId }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.TestId }) |
-                        @if (item.IsActive)
-                        {
-                            @Html.ActionLink("Delete", "Delete", new { id = item.TestId })
-                        }
-                        else
-                        {
-                            @Html.ActionLink("Activate", "Activate", new { id = item.TestId })
-
-                        }
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.IsActive)
+                    </th>
                 }
+                <th></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TestId)
+                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TestName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Creator)
+                    </td>
+                    @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsActive)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", new { id = item.TestId }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.TestId }) |
+                            @if (item.IsActive)
+                            {
+                                @Html.ActionLink("Delete", "Delete", new { id = item.TestId })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Activate", "Activate", new { id = item.TestId })
 
-<form asp-controller="Login" asp-action="Login" method="get" class="floating-box">
-    <div>
-        <input type="submit" value="Log out" class="btn btn-primary" />
-    </div>
-</form>
-@if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
-{
-    <form asp-controller="Test" asp-action="CreateTest" method="get" class="floating-box">
-        <div>
-            <input type="submit" value="Create test" class="btn btn-primary" />
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="buttons">
+            <form asp-controller="Login" asp-action="Login" method="get">
+                <div>
+                    <input type="submit" value="Log out" class="btn btn-primary" />
+                </div>
+            </form>
         </div>
-    </form>
-}
+        <div class="buttons">
+            @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+            {
+                <form asp-controller="Test" asp-action="CreateTest" method="get">
+                    <div>
+                        <input type="submit" value="Create test" class="btn btn-primary" />
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+</div>
