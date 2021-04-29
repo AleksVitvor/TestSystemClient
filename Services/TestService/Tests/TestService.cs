@@ -22,8 +22,27 @@ namespace Services.TestService.Tests
         {
             var client = HttpClientFactory.CreateClient("authorized");
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var result = await client.PostAsJsonAsync("/test", test);
+            var result = await client.PostAsJsonAsync("/tests", test);
             return result.IsSuccessStatusCode;
+        }
+
+        public async Task<TestRequestedModel> GetOneTest(int id, string token)
+        {
+            TestRequestedModel requestTest;
+
+            try
+            {
+                var client = HttpClientFactory.CreateClient("authorized");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = await client.GetAsync($"/tests/test?id={id}");
+                requestTest = await result.Content.ReadFromJsonAsync<TestRequestedModel>();
+            }
+            catch (Exception)
+            {
+                requestTest = null;
+            }
+
+            return requestTest;
         }
 
         public async Task<IEnumerable<TestRequestedModel>> GetTests(string token)
@@ -34,7 +53,7 @@ namespace Services.TestService.Tests
             {
                 var client = HttpClientFactory.CreateClient("authorized");
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                var result = await client.GetAsync("/test");
+                var result = await client.GetAsync("/tests");
                 tests = await result.Content.ReadFromJsonAsync<IEnumerable<TestRequestedModel>>();
             }
             catch (Exception e)
@@ -43,6 +62,22 @@ namespace Services.TestService.Tests
             }
 
             return tests;
+        }
+
+        public async Task<bool> UpdateTest(TestRequestedModel test, string token)
+        {
+            var client = HttpClientFactory.CreateClient("authorized");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var result = await client.PutAsJsonAsync("/tests", test);
+            return result.IsSuccessStatusCode;
+        }
+
+        public async Task<bool> ChangeTestActivity(TestRequestedModel test, string token)
+        {
+            var client = HttpClientFactory.CreateClient("authorized");
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var result = await client.PutAsJsonAsync($"/tests/test", test);
+            return result.IsSuccessStatusCode;
         }
     }
 }
