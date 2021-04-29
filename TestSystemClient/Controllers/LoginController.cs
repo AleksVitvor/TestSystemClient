@@ -43,6 +43,7 @@ namespace TestSystemClient.Controllers
             {
                 await Authenticate(registeredUser);
             }            
+        
             return RedirectToAction("Tests", "Test");                
         }
 

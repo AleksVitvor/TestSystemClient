@@ -55,7 +55,7 @@
                             @Html.ActionLink("Details", "Details", new { id = item.TestId }) |
                             @if (item.IsActive)
                             {
-                                @Html.ActionLink("Delete", "Delete", new { id = item.TestId })
+                                @Html.ActionLink("Deactivate", "Deactivate", new { id = item.TestId })
                             }
                             else
                             {
