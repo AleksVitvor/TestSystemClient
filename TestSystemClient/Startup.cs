@@ -38,18 +38,26 @@ namespace TestSystemClient
                     options.LoginPath = new PathString("/Login/Login");
                     options.AccessDeniedPath = new PathString("/Login/Login");
                 });
-
+#if DEBUG
             services.AddHttpClient("notauthorized", c =>
             {
-                //c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
                 c.BaseAddress = new Uri("http://localhost:3000/");
+            });
+            services.AddHttpClient("authorized", c =>
+            {
+                c.BaseAddress = new Uri("http://localhost:3000/");
+            });
+#else
+            services.AddHttpClient("notauthorized", c =>
+            {
+                c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
             });
 
             services.AddHttpClient("authorized", c =>
             {
-                //c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
-                c.BaseAddress = new Uri("http://localhost:3000/");
+                c.BaseAddress = new Uri("https://courcestage.herokuapp.com/");
             });
+#endif
 
             services.AddHttpContextAccessor();
         }
