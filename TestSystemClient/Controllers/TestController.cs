@@ -2,10 +2,8 @@
 using DtoModels.RequestModels.Test;
 using DtoModels.Test;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Services.TestService.Tests;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -22,7 +20,7 @@ namespace TestSystemClient.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Student, Teacher")]
+        [Authorize(Roles = "Student, Teacher, Admin")]
         public async Task<IActionResult> Tests()
         {
             var token = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;

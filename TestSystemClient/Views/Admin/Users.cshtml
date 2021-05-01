@@ -1,0 +1,50 @@
+﻿@model IEnumerable<DtoModels.User.UserRequestModel>
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<h1>Users</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Role)
+            </td>
+            <td>
+                @Html.ActionLink("Make student", "ChangeUserRole", new { UserId = item.UserId, RoleId = 1  }) |
+                @Html.ActionLink("Make teacher", "ChangeUserRole", new { UserId = item.UserId, RoleId = 2 }) |
+                @Html.ActionLink("Make admin", "ChangeUserRole", new { UserId = item.UserId, RoleId = 3 })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<form asp-controller="Test" asp-action="Tests" method="get">
+    <div>
+        <input type="submit" value="Back to tests" class="btn btn-primary" />
+    </div>
+</form>
