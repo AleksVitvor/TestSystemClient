@@ -26,7 +26,10 @@
                         @Html.DisplayNameFor(model => model.IsActive)
                     </th>
                 }
-                <th></th>
+                @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value != "Admin")
+                {
+                    <th></th>
+                }
             </tr>
         </thead>
         <tbody>
@@ -64,6 +67,13 @@
                             }
                         </td>
                     }
+
+                    @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Student")
+                    { 
+                        <td>
+                            @Html.ActionLink("Start test", "Start", new { id = item.TestId})
+                        </td>
+                    }
                 </tr>
             }
         </tbody>
@@ -77,15 +87,27 @@
                 </div>
             </form>
         </div>
-        <div class="buttons">
-            @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
-            {
+
+        @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+        {
+            <div class="buttons">
                 <form asp-controller="Test" asp-action="CreateTest" method="get">
                     <div>
                         <input type="submit" value="Create test" class="btn btn-primary" />
                     </div>
                 </form>
-            }
-        </div>
+            </div>
+        }
+
+        @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Admin")
+        {
+            <div class="buttons">
+                <form asp-controller="Admin" asp-action="Users" method="get">
+                    <div>
+                        <input type="submit" value="Admin panel" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        }
     </div>
 </div>
