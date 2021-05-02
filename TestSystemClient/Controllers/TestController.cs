@@ -4,6 +4,7 @@ using DtoModels.Test;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.TestService.Tests;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -25,7 +26,13 @@ namespace TestSystemClient.Controllers
         {
             var token = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
             var tests = await TestService.GetTests(token);
-            if(tests==null)
+
+            if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Student")
+            {
+                tests = tests.Where(x => x.IsActive == true);
+            }
+
+            if (tests==null)
             {
                 this.AddAlertDanger("Technical error occured while getting tests");
                 return RedirectToAction("User, Login");
