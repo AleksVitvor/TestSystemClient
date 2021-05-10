@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Services.CryptoService;
 using Services.Login.Login;
 using Services.Login.Registration;
+using Services.QuestionService;
 using Services.TestService.Tests;
 using Services.User;
 using System;
@@ -32,6 +33,7 @@ namespace TestSystemClient
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ITestService, TestService>();
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<ICrypto, CryptoService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -1,0 +1,61 @@
+﻿@model DtoModels.Question.QuestionModelDto
+@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "Questions";
+}
+
+<h1>Questions</h1>
+
+<h4>@Model.Test</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Question
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Questions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QuestionString)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { questionId = item.QuestionId, testId = Model.TestId }) |
+                    @Html.ActionLink("Delete", "Delete", new { questionId = item.QuestionId, testId = Model.TestId })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="buttons">
+        <form data_ajax="true" asp-controller="Test" asp-action="Tests" method="get">
+            <div>
+                <input type="submit" value="Back to tests" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+    @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Teacher")
+    {
+        <div class="buttons">
+            <form asp-controller="Question" asp-action="CreateQuestion" method="get">
+                <div hidden>
+                    <input asp-for="TestId" class="form-control" value="@Model.TestId" />
+                </div>
+                <div hidden>
+                    <input asp-for="Test" class="form-control" value="@Model.Test" />
+                </div>
+                <div>
+                    <input type="submit" value="Create question" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    }
+</div>
