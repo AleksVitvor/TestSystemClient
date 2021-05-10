@@ -8,6 +8,6 @@ namespace DtoModels.Question
 
         public string Test { get; set; }
 
-        public IEnumerable<string> Questions { get; set; }
+        public IEnumerable<Question> Questions { get; set; }
     }
 }

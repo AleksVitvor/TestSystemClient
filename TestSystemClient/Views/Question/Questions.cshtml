@@ -22,11 +22,11 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item)
+                    @Html.DisplayFor(modelItem => item.QuestionString)
                 </td>
                 <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                    @Html.ActionLink("Edit", "Edit", new { questionId = item.QuestionId, testId = Model.TestId }) |
+                    @Html.ActionLink("Delete", "Delete", new { questionId = item.QuestionId, testId = Model.TestId })
                 </td>
             </tr>
         }
@@ -35,7 +35,7 @@
 
 <div class="row">
     <div class="buttons">
-        <form asp-controller="Test" asp-action="Tests" method="get">
+        <form data_ajax="true" asp-controller="Test" asp-action="Tests" method="get">
             <div>
                 <input type="submit" value="Back to tests" class="btn btn-primary" />
             </div>
@@ -48,6 +48,9 @@
             <form asp-controller="Question" asp-action="CreateQuestion" method="get">
                 <div hidden>
                     <input asp-for="TestId" class="form-control" value="@Model.TestId" />
+                </div>
+                <div hidden>
+                    <input asp-for="Test" class="form-control" value="@Model.Test" />
                 </div>
                 <div>
                     <input type="submit" value="Create question" class="btn btn-primary" />

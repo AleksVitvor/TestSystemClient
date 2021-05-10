@@ -1,0 +1,45 @@
+﻿@model DtoModels.RequestModels.Question.QuestionRequestModel
+
+@{
+    ViewData["Title"] = "CreateQuestion";
+}
+
+<h1>Create question</h1>
+
+<h4>@Model.Question</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateQuestion">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="TestId" class="control-label"></label>
+                <input asp-for="TestId" class="form-control" value="@Model.TestId" readonly/>
+                <span asp-validation-for="TestId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Question" class="control-label"></label>
+                <input asp-for="Question" class="form-control" />
+                <span asp-validation-for="Question" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <form asp-controller="Test" asp-action="Tests" method="get">
+        <div hidden>
+            <input value="@Model.TestId" />
+        </div>
+        <div>
+            <input type="submit" value="Back to questions" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

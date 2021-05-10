@@ -32,8 +32,12 @@ namespace Services.QuestionService
                 var questionsWithTests = await result.Content.ReadFromJsonAsync<IEnumerable<QuestionRequestModel>>();
                 questions.Test = questionsWithTests.FirstOrDefault().Test;
                 questions.Questions = questionsWithTests
-                    .Where(x => x.Question != String.Empty)
-                    .Select(x => x.Question)
+                    .Where(x => x.Question != string.Empty)
+                    .Select(x => new Question()
+                    {
+                        QuestionId = x.QuestionId,
+                        QuestionString = x.Question
+                    })
                     .AsEnumerable();
                 questions.TestId = questionsWithTests.FirstOrDefault().TestId;
             }
@@ -43,6 +47,34 @@ namespace Services.QuestionService
             }
 
             return questions;
+        }
+
+        public async Task<bool> CreateQuestion(QuestionAddModel question, string token)
+        {
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = await client.PostAsJsonAsync("/question", question);
+                return result.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteQuestion(int questionId, string token)
+        {
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = await client.DeleteAsync($"/question?id={questionId}");
+                return result.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
