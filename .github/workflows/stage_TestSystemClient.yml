@@ -21,10 +21,13 @@ jobs:
       with:
         dotnet-version: '5.0.202'
 
-    - name: Build with dotnet
+    - name: Install dependencies
       run: |
         nuget sources add -name "private-packages" -Source https://nuget.telerik.com/nuget -StorePasswordInClearText -Username vitvor01@gmail.com -Password Nina1968
-        dotnet restore -c Release
+        dotnet restore	
+
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
