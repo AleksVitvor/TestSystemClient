@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core.Trial" Version="2021.1.330" />
   </ItemGroup>
 
   <ItemGroup>

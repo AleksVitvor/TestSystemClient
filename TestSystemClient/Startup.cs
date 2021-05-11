@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
+using Services.Answer;
 using Services.CryptoService;
 using Services.Login.Login;
 using Services.Login.Registration;
@@ -28,12 +30,18 @@ namespace TestSystemClient
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddKendo();
+
+            services
+                .AddMvc()
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 
             services.AddTransient<IRegistrationService, RegistrationService>();
             services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<ITestService, TestService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IQuestionService, QuestionService>();
+            services.AddTransient<IAnswerService, AnswerService>();
             services.AddTransient<ICrypto, CryptoService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
