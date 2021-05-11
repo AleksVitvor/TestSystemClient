@@ -24,7 +24,7 @@ jobs:
     - name: Build with dotnet
       run: |
         nuget sources add -name "private-packages" -Source https://nuget.telerik.com/nuget -StorePasswordInClearText -Username vitvor01@gmail.com -Password Nina1968
-        dotnet restore
+        dotnet restore -c Release
 
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
