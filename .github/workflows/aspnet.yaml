@@ -10,6 +10,12 @@ on:
     - main
     - stage
 
+package_sources:
+    nuget:
+        config_files:
+            - include:
+                - "NuGet.Сonfig"
+
 jobs:
   build:
 
