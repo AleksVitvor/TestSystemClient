@@ -1,4 +1,5 @@
 ﻿using DtoModels.Question;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Services.QuestionService
@@ -10,5 +11,7 @@ namespace Services.QuestionService
         public Task<bool> CreateQuestion(QuestionAddModel question, string token);
 
         public Task<bool> DeleteQuestion(int questionId, string token);
+
+        public Task<IEnumerable<QuestionWithAnswersDto>> GetQuestionWithAnswers(int testId, string token);
     }
 }
