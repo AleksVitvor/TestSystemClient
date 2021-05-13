@@ -76,5 +76,21 @@ namespace Services.QuestionService
                 return false;
             }
         }
+
+        public async Task<IEnumerable<QuestionWithAnswersDto>> GetQuestionWithAnswers(int testId, string token)
+        {
+            IEnumerable<QuestionWithAnswersDto> questionWithAnswers;
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = await client.GetAsync($"/question/list?testId={testId}");
+                questionWithAnswers = await result.Content.ReadFromJsonAsync<IEnumerable<QuestionWithAnswersDto>>();
+            }
+            catch
+            {
+                questionWithAnswers = null;
+            }
+            return questionWithAnswers;
+        }
     }
 }

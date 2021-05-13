@@ -9,6 +9,7 @@ using Services.Answer;
 using Services.CryptoService;
 using Services.Login.Login;
 using Services.Login.Registration;
+using Services.Mark;
 using Services.QuestionService;
 using Services.TestService.Tests;
 using Services.User;
@@ -41,6 +42,7 @@ namespace TestSystemClient
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IQuestionService, QuestionService>();
             services.AddTransient<IAnswerService, AnswerService>();
+            services.AddTransient<IMarkService, MarkService>();
             services.AddTransient<ICrypto, CryptoService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
