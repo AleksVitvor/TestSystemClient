@@ -71,7 +71,7 @@
                     @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Student")
                     { 
                         <td>
-                            @Html.ActionLink("Start test", "Start", new { id = item.TestId})
+                            @Html.ActionLink("Start test", "Start", "ExecuteTest", new { id = item.TestId, name = item.TestName})
                         </td>
                     }
                 </tr>
