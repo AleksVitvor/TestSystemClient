@@ -1,0 +1,68 @@
+﻿@using Kendo.Mvc.UI
+@model DtoModels.Test.TestModelWithIdDto
+
+@{
+    ViewData["Title"] = "GetMarks";
+}
+
+<h1>Marks</h1>
+
+<h4>@Model.TestName</h4>
+<hr />
+<div class="row">
+    @(Html.Kendo().Grid<DtoModels.Mark.MarkDto>()
+    .Name("grid")
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.StudentName);
+        columns.Bound(p => p.Mark).Width(100);
+    })
+    .ToolBar(tools => tools.Pdf())
+        .Pdf(pdf => pdf
+            .AllPages()
+            .AvoidLinks()
+            .PaperSize("A4")
+            .Margin("2cm", "1cm", "1cm", "1cm")
+            .Landscape()
+            .RepeatHeaders()
+            .TemplateId("page-template")
+            .FileName($"{Model.TestName}_{DateTime.Now}.pdf")
+        )
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .HtmlAttributes(new { style = "height:430px;" })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(20)
+        .Events(events => events.Error("error_handler"))
+        .Model(model => model.Id(p => p.StudentName))
+        .Read(read => read.Action("ReadMarks", "Mark", new { testId = Model.TestId}))
+    )
+)
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+    </script>
+</div>
+
+<form asp-controller="Test" asp-action="Tests" method="get">
+    <div>
+        <input type="submit" value="Back to tests" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

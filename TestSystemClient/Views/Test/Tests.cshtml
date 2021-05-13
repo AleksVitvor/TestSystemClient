@@ -65,6 +65,7 @@
                                 @Html.ActionLink("Activate", "Activate", new { id = item.TestId })
 
                             }
+                            | @Html.ActionLink("View marks", "GetMarks", "Mark", new {testName = item.TestName, testId = item.TestId})
                         </td>
                     }
 

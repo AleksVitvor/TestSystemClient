@@ -1,4 +1,6 @@
 ﻿using DtoModels.Answers;
+using DtoModels.Mark;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -16,6 +18,24 @@ namespace Services.Mark
             HttpClientFactory = httpClientFactory;
             client = HttpClientFactory.CreateClient("authorized");
         }
+
+        public async Task<IEnumerable<MarkDto>> GetMarkForTest(int testId, string token)
+        {
+            IEnumerable<MarkDto> marks;
+
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = await client.GetAsync($"/mark?testId={testId}");
+                marks = await result.Content.ReadFromJsonAsync<IEnumerable<MarkDto>>();
+            }
+            catch
+            {
+                marks = null;
+            }
+            return marks;
+        }
+
         public async Task<int> GetMarkFromAnswers(TestAnswer answer, string token)
         {
             try
@@ -29,5 +49,7 @@ namespace Services.Mark
                 return -1;
             }
         }
+
+
     }
 }
