@@ -1,6 +1,9 @@
 ﻿using AlertLibrary;
 using DtoModels.RequestModels.Test;
 using DtoModels.Test;
+using DtoModels.User;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.TestService.Tests;
@@ -94,7 +97,7 @@ namespace TestSystemClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Deactivate(int id)
+        public async Task<IActionResult> Deactivate(int id, string testName)
         {
             var token = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
             var test = new TestRequestedModel()
@@ -116,7 +119,7 @@ namespace TestSystemClient.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Teacher")]
-        public async Task<IActionResult> Activate(int id)
+        public async Task<IActionResult> Activate(int id, string testName)
         {
             var token = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
             var test = new TestRequestedModel()
@@ -133,7 +136,42 @@ namespace TestSystemClient.Controllers
             {
                 this.AddAlertWarning("Test wasn't activated");
             }
-            return RedirectToAction(nameof(Tests));
+            return RedirectToAction(nameof(ViewAssigned), new { testId = id, testName = testName });
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> ViewAssigned(TestModelWithIdDto testModel)
+        {
+            return View(testModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> ReadAssign([DataSourceRequest] DataSourceRequest request, int testId)
+        {
+            var token = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
+            var students = await TestService.ReadStudentsForAssign(testId, token);
+            if(students == null)
+            {
+                this.AddAlertDanger("Error occured while getting students");
+                return RedirectToAction(nameof(Tests));
+            }
+            return Json(students.ToDataSourceResult(request));
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Teacher")]
+        public async Task<IActionResult> UpdateAssign([DataSourceRequest] DataSourceRequest request, int testId, StudentDto student)
+        {
+            var token = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
+            var upStudent = await TestService.UpdateStudentsAssign(student, testId, token);
+            if (upStudent == null)
+            {
+                this.AddAlertDanger("Error occured while update student");
+                return RedirectToAction(nameof(Tests));
+            }
+            return Json(new[] { upStudent }.ToDataSourceResult(request));
         }
     }
 }
