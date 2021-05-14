@@ -58,14 +58,15 @@
                             @Html.ActionLink("Questions", "Questions", "Question", new { id = item.TestId }) |
                             @if (item.IsActive)
                             {
-                                @Html.ActionLink("Deactivate", "Deactivate", new { id = item.TestId })
+                                @Html.ActionLink("Deactivate", "Deactivate", new { id = item.TestId, testName = item.TestName })
                             }
                             else
                             {
-                                @Html.ActionLink("Activate", "Activate", new { id = item.TestId })
+                                @Html.ActionLink("Activate", "Activate", new { id = item.TestId, testName = item.TestName })
 
                             }
                             | @Html.ActionLink("View marks", "GetMarks", "Mark", new {testName = item.TestName, testId = item.TestId})
+                            | @Html.ActionLink("View Assigned Students", "ViewAssigned", new { testName = item.TestName, testId = item.TestId })
                         </td>
                     }
 
@@ -95,6 +96,17 @@
                 <form asp-controller="Test" asp-action="CreateTest" method="get">
                     <div>
                         <input type="submit" value="Create test" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        }
+
+        @if (User.FindFirst(x => x.Type == ClaimsIdentity.DefaultRoleClaimType).Value == "Student")
+        {
+            <div class="buttons">
+                <form asp-controller="Mark" asp-action="GetMyMarks" method="get">
+                    <div>
+                        <input type="submit" value="My marks" class="btn btn-primary" />
                     </div>
                 </form>
             </div>

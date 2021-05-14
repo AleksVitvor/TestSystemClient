@@ -36,6 +36,23 @@ namespace Services.Mark
             return marks;
         }
 
+        public async Task<IEnumerable<MyMarkDto>> GetMarkForUser(string token)
+        {
+            IEnumerable<MyMarkDto> marks;
+
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = await client.GetAsync($"/mark/my");
+                marks = await result.Content.ReadFromJsonAsync<IEnumerable<MyMarkDto>>();
+            }
+            catch
+            {
+                marks = null;
+            }
+            return marks;
+        }
+
         public async Task<int> GetMarkFromAnswers(TestAnswer answer, string token)
         {
             try
@@ -49,7 +66,5 @@ namespace Services.Mark
                 return -1;
             }
         }
-
-
     }
 }

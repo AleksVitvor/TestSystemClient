@@ -1,0 +1,73 @@
+﻿@using Kendo.Mvc.UI
+@model DtoModels.Test.TestModelWithIdDto
+@{
+    ViewData["Title"] = "ViewAssigned";
+}
+
+<h1>Student assignment</h1>
+
+<h4>@Model.TestName</h4>
+<div class="row">
+    @(Html.Kendo().Grid<DtoModels.User.StudentDto>()
+    .Name("grid")
+    .Columns(columns =>
+    {
+        columns.Bound(p => p.StudentName);
+        columns.Bound(p => p.IsAssigned).Width(100);
+        columns.Command(command => { command.Edit(); }).Width(160);
+    })
+    .ToolBar(tools => tools.Pdf())
+        .Pdf(pdf => pdf
+            .AllPages()
+            .AvoidLinks()
+            .PaperSize("A4")
+            .Margin("2cm", "1cm", "1cm", "1cm")
+            .Landscape()
+            .RepeatHeaders()
+            .TemplateId("page-template")
+            .FileName($"{Model.TestName}_{DateTime.Now}_Assigned.pdf")
+        )
+    .Editable(editable => editable.Mode(GridEditMode.InLine))
+    .Pageable()
+    .Sortable()
+    .Scrollable()
+    .HtmlAttributes(new { style = "height:430px;" })
+    .DataSource(dataSource => dataSource
+        .Ajax()
+        .PageSize(20)
+        .Events(events => events.Error("error_handler"))
+        .Model(model =>
+        {
+            model.Id(p => p.UserId);
+            model.Field(product => product.StudentName).Editable(false);
+        })
+        .Read(read => read.Action("ReadAssign", "Test", new { testId = @Model.TestId }))
+        .Update(update => update.Action("UpdateAssign", "Test", new { testId = @Model.TestId }))
+    )
+)
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+    </script>
+</div>
+
+<form asp-controller="Test" asp-action="Tests" method="get">
+    <div>
+        <input type="submit" value="Back to tests" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

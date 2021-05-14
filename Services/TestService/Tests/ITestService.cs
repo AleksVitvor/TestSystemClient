@@ -1,5 +1,6 @@
 ﻿using DtoModels.RequestModels.Test;
 using DtoModels.Test;
+using DtoModels.User;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,5 +17,9 @@ namespace Services.TestService.Tests
         public Task<bool> UpdateTest(TestRequestedModel test, string token);
 
         public Task<bool> ChangeTestActivity(TestRequestedModel test, string token);
+
+        public Task<IEnumerable<StudentDto>> ReadStudentsForAssign(int testId, string token);
+
+        public Task<StudentDto> UpdateStudentsAssign(StudentDto student, int testId, string token);
     }
 }
