@@ -75,12 +75,12 @@ namespace TestSystemClient.Controllers
                 }
                 else
                 {
-                    this.AddAlertDanger("Error occuerd while checking your answers");
+                    this.AddAlertDanger("Error occurred while checking your answers");
                 }
             }
             catch 
             {
-                this.AddAlertDanger("Error occuerd while checking your answers");
+                this.AddAlertDanger("Error occurred while checking your answers");
             }
             return RedirectToAction("Tests", "Test");
         }
