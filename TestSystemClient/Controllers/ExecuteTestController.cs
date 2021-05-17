@@ -90,7 +90,7 @@ namespace TestSystemClient.Controllers
 
                 using (ClientWebSocket client = new ClientWebSocket())
                 {
-                    await client.ConnectAsync(new Uri("wss://courcestage.herokuapp.com/"), CancellationToken.None);
+                    await client.ConnectAsync(new Uri("wss://courcestage.herokuapp.com"), CancellationToken.None);
                     ArraySegment<byte> arraySegment = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
                     await client.SendAsync(arraySegment.Array, WebSocketMessageType.Text, true, CancellationToken.None);
                 }
