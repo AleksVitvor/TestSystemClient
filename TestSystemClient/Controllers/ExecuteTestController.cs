@@ -5,9 +5,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services.Mark;
 using Services.QuestionService;
+using Services.TestService.Tests;
+using Services.User;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Security.Claims;
+using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace TestSystemClient.Controllers
@@ -16,10 +22,18 @@ namespace TestSystemClient.Controllers
     {
         IQuestionService questionService;
         IMarkService markService;
-        public ExecuteTestController(IQuestionService questionService, IMarkService markService)
+        ITestService testService;
+        IUserService userService;
+        public ExecuteTestController(
+            IQuestionService questionService, 
+            IMarkService markService, 
+            ITestService testService,
+            IUserService userService)
         {
             this.questionService = questionService;
             this.markService = markService;
+            this.testService = testService;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -69,6 +83,17 @@ namespace TestSystemClient.Controllers
                 };
                 var token = User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value;
                 var mark = await markService.GetMarkFromAnswers(answerModel, token);
+
+                var test = await testService.GetOneTest(testId, token);
+                var userName = await userService.GetUserName(token);
+                var message = $"{userName} has finished {test.TestName} with mark {mark}";
+
+                using (ClientWebSocket client = new ClientWebSocket())
+                {
+                    await client.ConnectAsync(new Uri("wss://courcestage.herokuapp.com/"), CancellationToken.None);
+                    ArraySegment<byte> arraySegment = new ArraySegment<byte>(Encoding.UTF8.GetBytes(message));
+                    await client.SendAsync(arraySegment.Array, WebSocketMessageType.Text, true, CancellationToken.None);
+                }
                 if (mark != -1)
                 {
                     this.AddAlertInfo($"You got {mark}");

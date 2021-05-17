@@ -42,5 +42,19 @@ namespace Services.User
 
             return users;
         }
+
+        public async Task<string> GetUserName(string token)
+        {
+            try
+            {
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                var result = await client.GetAsync("/user/one");
+                return await result.Content.ReadFromJsonAsync<string>();
+            }
+            catch
+            {
+                return string.Empty;
+            }
+        }
     }
 }

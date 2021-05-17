@@ -26,7 +26,7 @@ namespace TestSystemClient.Controllers
         [HttpGet]
         public async Task<IActionResult> Login()
         {
-            SignOut();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return View();
         }
 
