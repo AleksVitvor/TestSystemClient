@@ -9,5 +9,7 @@ namespace Services.User
         public Task<IEnumerable<UserRequestModel>> GetUsers(string token);
 
         public Task<bool> ChangeUserRole(UserModelDto user, string token);
+
+        public Task<string> GetUserName(string token);
     }
 }
