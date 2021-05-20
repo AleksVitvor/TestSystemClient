@@ -20,10 +20,17 @@ namespace Services.Login.Registration
         }
         public async Task<bool> Register(RegisterModelDto registerModel)
         {
-            var client = HttpClientFactory.CreateClient("notauthorized");
-            registerModel.Password = Crypto.SHA256GetHash(registerModel.Password);
-            var result = await client.PostAsJsonAsync("/user/register", registerModel);
-            return result.IsSuccessStatusCode;
+            try
+            {
+                var client = HttpClientFactory.CreateClient("notauthorized");
+                registerModel.Password = Crypto.SHA256GetHash(registerModel.Password);
+                var result = await client.PostAsJsonAsync("/user/register", registerModel);
+                return result.IsSuccessStatusCode;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
